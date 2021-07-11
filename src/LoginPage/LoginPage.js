@@ -4,7 +4,7 @@ import logo from '../resources/logo.ico';
 import ss from '../resources/screenshare.ico';
 import recordico from '../resources/recording.ico';
 import faceico from '../resources/face.ico';
-import camico from '../resources/camera.ico.ico';
+import camico from '../resources/camera.ico';
 import micico from '../resources/mic.ico';
 import chatico from '../resources/chat.ico';
 import UsernameInput from './components/UsernameInput';
