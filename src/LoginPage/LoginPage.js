@@ -2,6 +2,11 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import logo from '../resources/logo.ico';
 import ss from '../resources/screenshare.ico';
+import recordico from '../resources/recording.ico';
+import faceico from '../resources/face.ico';
+import camico from '../resources/camera.ico.ico';
+import micico from '../resources/mic.ico';
+import chatico from '../resources/chat.ico';
 import UsernameInput from './components/UsernameInput';
 import SubmitButton from './components/SubmitButton';
 import { useHistory } from 'react-router-dom';
@@ -48,7 +53,7 @@ const LoginPage = ({ saveUsername }) => {
         <div className="responsive">
           <div className="gallery">
 
-            <img src="https://image.flaticon.com/icons/png/512/2598/2598196.png" alt="Cinque Terre" width="500" height="300">
+            <img src={recordico} alt="Cinque Terre" width="500" height="300">
             </img>
 
             <div className="desc">Record remote stream of the call</div>
@@ -57,7 +62,7 @@ const LoginPage = ({ saveUsername }) => {
         <div className="responsive">
           <div className="gallery">
 
-            <img src="https://cdn.icon-icons.com/icons2/2298/PNG/512/dont_touch_face_man_hand_no_covid_coronavirus_icon_141614.png" alt="Cinque Terre" width="500" height="300">
+            <img src={faceico} alt="Cinque Terre" width="500" height="300">
             </img>
 
             <div className="desc">Track your hand to prevent the spread of covid 19</div>
@@ -66,7 +71,7 @@ const LoginPage = ({ saveUsername }) => {
         <div className="responsive">
           <div className="gallery">
 
-            <img src="https://img-premium.flaticon.com/png/512/2882/premium/2882911.png?token=exp=1625922314~hmac=f863df6cc493aa3be1be13f6480ceaf7" alt="Cinque Terre" width="500" height="300">
+            <img src={micico} alt="Cinque Terre" width="500" height="300">
             </img>
 
             <div className="desc">Control mic while calling</div>
@@ -75,7 +80,7 @@ const LoginPage = ({ saveUsername }) => {
         <div className="responsive">
           <div className="gallery">
 
-            <img src="https://image.flaticon.com/icons/png/512/3567/3567184.png" alt="Cinque Terre" width="500" height="300">
+            <img src={camico} alt="Cinque Terre" width="500" height="300">
             </img>
 
             <div className="desc">Control camera while calling</div>
@@ -84,7 +89,7 @@ const LoginPage = ({ saveUsername }) => {
         <div className="responsive">
           <div className="gallery">
 
-            <img src="https://img-premium.flaticon.com/png/512/3842/premium/3842142.png?token=exp=1625922498~hmac=e3dd4dab1008037a2cea4131d5e650ad" alt="Cinque Terre" width="500" height="300">
+            <img src={chatico} alt="Cinque Terre" width="500" height="300">
             </img>
 
             <div className="desc">Chat with your friend</div>
