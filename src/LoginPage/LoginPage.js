@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import logo from '../resources/logo.ico';
+import ss from '../resources/screenshare.ico';
 import UsernameInput from './components/UsernameInput';
 import SubmitButton from './components/SubmitButton';
 import { useHistory } from 'react-router-dom';
@@ -38,7 +39,7 @@ const LoginPage = ({ saveUsername }) => {
         <div className="responsive">
           <div className="gallery">
 
-            <img src="https://img-premium.flaticon.com/png/512/2353/premium/2353335.png?token=exp=1625921465~hmac=a3d38ef3477f884876e64e415f2351f6" alt="Cinque Terre" width="600" height="400">
+            <img src={ss} alt="Cinque Terre" width="600" height="400">
             </img>
 
             <div className="desc">You can share your screen while calling</div>
