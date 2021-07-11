@@ -9,6 +9,7 @@ import { connectWithWebSocket } from './utils/wssConnection/wssConnection';
 import Dashboard from './Dashboard/Dashboard';
 import LoginPage from './LoginPage/LoginPage';
 
+
 function App () {
   useEffect(() => {
     connectWithWebSocket();

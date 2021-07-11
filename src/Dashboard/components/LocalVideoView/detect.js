@@ -1,4 +1,5 @@
 import * as bodyPix from '@tensorflow-models/body-pix';
+import { store } from 'react-notifications-component';
 // eslint-disable-next-line
 import * as tf from '@tensorflow/tfjs';
 
@@ -142,7 +143,20 @@ export const check = (sourceVideo) => {
                     console.log("alert!!!", alerts);
 
 
-                    alert('Do not touch your face to prevent the spread of covid 19!');
+                    // alert('Do not touch your face to prevent the spread of covid 19!');
+                    store.addNotification({
+                        title: "Warning!",
+                        message: "Don't touch you face to reduce the spread of covid 19",
+                        type: "success",
+                        insert: "top",
+                        container: "top-left",
+                        animationIn: ["animate__animated", "animate__fadeIn"],
+                        animationOut: ["animate__animated", "animate__fadeOut"],
+                        dismiss: {
+                          duration: 2000,
+                          onScreen: true
+                        }
+                      });
 
                 }
 

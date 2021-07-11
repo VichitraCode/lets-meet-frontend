@@ -5,6 +5,7 @@ import * as webRTCHandler from '../webRTC/webRTCHandler';
 
 const SERVER = 'https://lets-meet-backend-application.herokuapp.com';
 
+
 const broadcastEventTypes = {
   ACTIVE_USERS: 'ACTIVE_USERS'
  
