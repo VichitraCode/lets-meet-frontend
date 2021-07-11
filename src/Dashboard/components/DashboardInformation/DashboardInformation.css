@@ -1,0 +1,27 @@
+.dashboard_info_text_container {
+  /* margin-left: 0px; */
+  margin-top: 380px;
+
+  display: flex;
+  flex-direction: column;
+  background:linear-gradient(to right,#1c92d2, #f2fcfe);
+  opacity: 0.9;
+  /* padding-right: 30px; */
+  /* padding-left: 30px; */
+  /* box-shadow: 10px 10px #6babe7; */
+  border-radius: 10px;
+  text-align-last: center;
+}
+
+.dashboard_info_text_title {
+  font-size: 50px;
+}
+
+.dashboard_info_text_description {
+  margin-top: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  font-size: 20px;
+  text-align:center;
+}

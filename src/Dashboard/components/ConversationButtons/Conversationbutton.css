@@ -1,0 +1,36 @@
+.button {
+        width: 50px;
+         height: 50px;
+         border-radius: 40px;
+         border: 2px solid #33151554;
+         background-color: #041531;
+        display: flex;
+         align-items: center;
+        justify-content: center; 
+         margin-left: 10px;
+        /* box-shadow: none;
+         border-image: none;
+         border-style:none;
+        border-width: 0px;
+        outline: none; */
+   }
+   button:hover {
+    opacity: 0.5;
+    box-shadow: 0px 0px 0px transparent;
+    border: 0px solid transparent;
+    text-shadow: 0px 0px 0px transparent;
+  }
+  .recordingIndicator{
+
+    width: 150px;
+    height: 30px;
+    border-radius: 10px;
+    border: 2px solid #cec9da;
+    background: linear-gradient(168.68deg, #0052c9 1.12%, #0a91db 100%);
+ 
+   display: flex;
+    align-items: center;
+   justify-content: center; 
+    margin-left: 10px;
+    margin-top: 10px;
+  }
