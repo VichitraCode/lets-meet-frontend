@@ -161,11 +161,12 @@ If the call is accepted  then the 'pre-offer-answer' message with the call accep
 
 
 Now caller side will recive answer from the calle side and the remote decription for the caller side will get setted
-![alt text](https://github.com/VichitraCode/lets-meet-frontend/blob/master/src/resources/Screenshot%20(163).png)
+
 
     export const handleAnswer = async (data) => {
     await peerConnection.setRemoteDescription(data.answer);
     };
+![alt text](https://github.com/VichitraCode/lets-meet-frontend/blob/master/src/resources/Screenshot%20(163).png)
 Now for the screen share the sent strem will get replaced by the screen share stream
                             
     export const switchForScreenSharingStream = async () => {
