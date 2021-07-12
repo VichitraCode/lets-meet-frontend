@@ -1,5 +1,6 @@
 # How this project works
 When you run this project and enter you name on login page and press submit button your name with correspoding socked id will get saved in an array in the backend server and localstream will get set and client will be ready to recieve call or data and this all will be implemented by getLocalStream()
+![alt text] (https://github.com/VichitraCode/lets-meet-frontend/blob/master/src/resources/Screenshot%20(159).png)
 
     // localstream is fetched by using webrtc
     export const getLocalStream = () => {
