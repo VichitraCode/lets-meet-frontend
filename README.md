@@ -1,70 +1,192 @@
-# Getting Started with Create React App
+# How this project works
+When you run this project and enter you name on login page and press submit button your name with correspoding socked id will get saved in an array in the backend server and localstream will get set and client will be ready to recieve call or data and this all will be implemented by getLocalStream()
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+                    // localstream is fetched by using webrtc
+                    export const getLocalStream = () => {
+                    navigator.mediaDevices.getUserMedia(defaultConstrains)
+                        .then(stream => {
+                        store.dispatch(setLocalStream(stream));
+                        store.dispatch(setCallState(callStates.CALL_AVAILABLE));
+                        createPeerConnection();
+                        })
+                        .catch(err => {
+                        console.log('error occured when trying to get an access to get local stream');
+                        console.log(err);
+                        });
+                    }
+                    ;
 
-## Available Scripts
+                    // peerconnection are created ,localstream and remotestream are added to peerconnection
+                    // datachannel are created for message
+                    const createPeerConnection = () => {
+                    peerConnection = new RTCPeerConnection(config);
+                    const localStream = store.getState().call.localStream;
 
-In the project directory, you can run:
+                    for (const track of localStream.getTracks()) {
+                        peerConnection.addTrack(track, localStream);
+                    }
 
-### `npm start`
+                    peerConnection.ontrack = ({ streams: [stream] }) => {
+                        store.dispatch(setRemoteStream(stream));
+                    };
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+                    // incoming data channel messages
+                    peerConnection.ondatachannel = (event) => {
+                        const dataChannel = event.channel;
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+                        dataChannel.onopen = () => {
+                        console.log('peer connection is ready to receive data channel messages');
+                        };
 
-### `npm test`
+                        dataChannel.onmessage = (event) => {
+                        store.dispatch(setMessage(true, event.data));
+                        
+                        };
+                    };
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+                    dataChannel = peerConnection.createDataChannel('chat');
 
-### `npm run build`
+                    dataChannel.onopen = () => {
+                        console.log('chat data channel succesfully opened');
+                    };
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+                    peerConnection.onicecandidate = (event) => {
+                        console.log('geeting candidates from stun server');
+                        if (event.candidate) {
+                        wss.sendWebRTCCandidate({
+                            candidate: event.candidate,
+                            connectedUserSocketId: connectedUserSocketId
+                        });
+                        }
+                    };
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+                    peerConnection.onconnectionstatechange = (event) => {
+                        if (peerConnection.connectionState === 'connected') {
+                        console.log('succesfully connected with other peer');
+                        }
+                    };
+                    };
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+After pressing submit button ,dashboard will open and the user details stored in an array in the backend sever will get rendered in the left side of dashboard and you can call these active users by clicking on dial button corresponding to their names.
+When dial button nis clicked startCalling() function is called call state and calle username are dispatched to store and 'pre-offer' message is sent by socket.io to the callee via the signalling server
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+                                // preofffer is sent and call states ar chnaged
+                                export const startCalling = (calleeDetails) => {
+                                connectedUserSocketId = calleeDetails.socketId;
+                                store.dispatch(setCallState(callStates.CALL_IN_PROGRESS));
+                                store.dispatch(setCallingDialogVisible(true));
+                                store.dispatch(setCalleeUsername(calleeDetails.username));
+                                wss.sendPreOffer({
+                                    callee: calleeDetails,
+                                    caller: {
+                                    username: store.getState().dashboard.username
+                                    }
+                                });
+                                };
+   if callees socket server listen 'pre-offer' then handlePreOffer()  function is invoked on the callee side and the caller's details are dispatched to store and call state is set to CALL_REQUESTED then the dialog box appears with option of accepting and rejecting the call
+                                    export const handlePreOffer = (data) => {
+                                    if (checkIfCallIsPossible()) {
+                                        connectedUserSocketId = data.callerSocketId;
+                                        store.dispatch(setCallerUsername(data.callerUsername));
+                                        store.dispatch(setCallState(callStates.CALL_REQUESTED));
+                                    } else {
+                                        wss.sendPreOfferAnswer({
+                                        callerSocketId: data.callerSocketId,
+                                        answer: preOfferAnswers.CALL_NOT_AVAILABLE
+                                        });
+                                    }
+                                    };               
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+If the call is accepted  then the 'pre-offer-answer' message with the call accepted answer is emitted by socket.io to the caller side via signalling server and call state is setted to CALL_IN_PROGRESS
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+                                    export const acceptIncomingCallRequest = () => {
+                                    wss.sendPreOfferAnswer({
+                                        callerSocketId: connectedUserSocketId,
+                                        answer: preOfferAnswers.CALL_ACCEPTED
+                                    });
 
-## Learn More
+                                    store.dispatch(setCallState(callStates.CALL_IN_PROGRESS));
+                                    };
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+  Now the caller will handle the 'pre-offer-answer' recieved from the callee and the handlePreOfferAnswer()will get invoked and it will send the webrtc offer to the callee and local description will get setted 
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+                                                export const handlePreOfferAnswer = (data) => {
+                                                store.dispatch(setCallingDialogVisible(false));
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+                                                if (data.answer === preOfferAnswers.CALL_ACCEPTED) {
+                                                    sendOffer();
+                                                } else {
+                                                    let rejectionReason;
+                                                    if (data.answer === preOfferAnswers.CALL_NOT_AVAILABLE) {
+                                                    rejectionReason = 'Callee is not able to pick up the call right now';
+                                                    } else {
+                                                    rejectionReason = 'Call rejected by the callee';
+                                                    }
+                                                    store.dispatch(setCallRejected({
+                                                    rejected: true,
+                                                    reason: rejectionReason
+                                                    }));
 
-### Analyzing the Bundle Size
+                                                    resetCallData();
+                                                }
+                                                };
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+                                                const sendOffer = async () => {
+                                                const offer = await peerConnection.createOffer();
+                                                await peerConnection.setLocalDescription(offer);
+                                                wss.sendWebRTCOffer({
+                                                    calleeSocketId: connectedUserSocketId,
+                                                    offer: offer
+                                                });
+                                                };
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+ Now handleOffer() function will get invoked on the calle side to handle the webrtc offer sent by caller and the local description and remotedescription will get setted for the calle and answer will be sent to the caller.
 
-### Advanced Configuration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+                                                // remote and local description is setted for the callee and answer is sent to caller
+                                                export const handleOffer = async (data) => {
+                                                await peerConnection.setRemoteDescription(data.offer);
+                                                const answer = await peerConnection.createAnswer();
+                                                await peerConnection.setLocalDescription(answer);
+                                                wss.sendWebRTCAnswer({
+                                                    callerSocketId: connectedUserSocketId,
+                                                    answer: answer
+                                                });
+                                                };
 
-### Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Now caller side will recive answer from the calle side and the remote decription for the caller side will get setted
 
-### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+                            // remotedescription isi setted for caller
+                            export const handleAnswer = async (data) => {
+                            await peerConnection.setRemoteDescription(data.answer);
+                            };
+Now for the screen share the sent strem will get replaced by the screen share stream
+                            let screenSharingStream;
+                            // replace the stream with the screenshare stream
+                            export const switchForScreenSharingStream = async () => {
+                            if (!store.getState().call.screenSharingActive) {
+                                try {
+                                screenSharingStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+                                store.dispatch(setScreenSharingActive(true));
+                                const senders = peerConnection.getSenders();
+                                const sender = senders.find(sender => sender.track.kind === screenSharingStream.getVideoTracks()[0].kind);
+                                sender.replaceTrack(screenSharingStream.getVideoTracks()[0]);
+                                } catch (err) {
+                                console.error('error occured when trying to get screen sharing stream', err);
+                                }
+                            } else {
+                                const localStream = store.getState().call.localStream;
+                                const senders = peerConnection.getSenders();
+                                const sender = senders.find(sender => sender.track.kind === localStream.getVideoTracks()[0].kind);
+                                sender.replaceTrack(localStream.getVideoTracks()[0]);
+                                store.dispatch(setScreenSharingActive(false));
+                                screenSharingStream.getTracks().forEach(track => track.stop());
+                            }
+                            }
+                            ;
