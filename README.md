@@ -172,8 +172,8 @@ Now caller side will recive answer from the calle side and the remote decription
 
 
 #Some additional features
-    Screen share
-    Record the stream
-    Chat feature
-    Tracks hand touch on face and throw the alert
+Screen share
+Record the stream
+Chat feature
+Tracks hand touch on face and throw the alert
     
