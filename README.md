@@ -1,5 +1,6 @@
 # How this project works
 When you run this project and enter you name on login page and press submit button your name with correspoding socked id will get saved in an array in the backend server and localstream will get set and client will be ready to recieve call or data and this all will be implemented by getLocalStream()
+![alt text](https://github.com/VichitraCode/lets-meet-frontend/blob/master/src/resources/Screenshot%20(159).png)
 
     // localstream is fetched by using webrtc
     export const getLocalStream = () => {
@@ -72,7 +73,7 @@ After pressing submit button ,dashboard will open and the user details stored in
 When dial button nis clicked startCalling() function is called call state and calle username are dispatched to store and 'pre-offer' message is sent by socket.io to the callee via the signalling server
 
 
-    // preofffer is sent and call states ar chnaged
+    
     export const startCalling = (calleeDetails) => {
     connectedUserSocketId = calleeDetails.socketId;
     store.dispatch(setCallState(callStates.CALL_IN_PROGRESS));
@@ -85,7 +86,10 @@ When dial button nis clicked startCalling() function is called call state and ca
         }
     });
     };
+![alt text](https://github.com/VichitraCode/lets-meet-frontend/blob/master/src/resources/Screenshot%20(160).png)    
+    
  if callees socket server listen 'pre-offer' then handlePreOffer()  function is invoked on the callee side and the caller's details are dispatched to store and call state is set to CALL_REQUESTED then the dialog box appears with option of accepting and rejecting the call
+ ![alt text](https://github.com/VichitraCode/lets-meet-frontend/blob/master/src/resources/Screenshot%20(162).png)
  
         export const handlePreOffer = (data) => {
         if (checkIfCallIsPossible()) {
@@ -164,26 +168,12 @@ Now caller side will recive answer from the calle side and the remote decription
     export const handleAnswer = async (data) => {
     await peerConnection.setRemoteDescription(data.answer);
     };
-Now for the screen share the sent strem will get replaced by the screen share stream
-                            
-    export const switchForScreenSharingStream = async () => {
-    if (!store.getState().call.screenSharingActive) {
-        try {
-        screenSharingStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
-        store.dispatch(setScreenSharingActive(true));
-        const senders = peerConnection.getSenders();
-        const sender = senders.find(sender => sender.track.kind === screenSharingStream.getVideoTracks()[0].kind);
-        sender.replaceTrack(screenSharingStream.getVideoTracks()[0]);
-        } catch (err) {
-        console.error('error occured when trying to get screen sharing stream', err);
-        }
-    } else {
-        const localStream = store.getState().call.localStream;
-        const senders = peerConnection.getSenders();
-        const sender = senders.find(sender => sender.track.kind === localStream.getVideoTracks()[0].kind);
-        sender.replaceTrack(localStream.getVideoTracks()[0]);
-        store.dispatch(setScreenSharingActive(false));
-        screenSharingStream.getTracks().forEach(track => track.stop());
-    }
-    }
-    ;
+![alt text](https://github.com/VichitraCode/lets-meet-frontend/blob/master/src/resources/Screenshot%20(163).png)
+
+
+#Some additional features
+    Screen share
+    Record the stream
+    Chat feature
+    Tracks hand touch on face and throw the alert
+    
