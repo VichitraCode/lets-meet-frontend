@@ -169,26 +169,11 @@ Now caller side will recive answer from the calle side and the remote decription
     await peerConnection.setRemoteDescription(data.answer);
     };
 ![alt text](https://github.com/VichitraCode/lets-meet-frontend/blob/master/src/resources/Screenshot%20(163).png)
-Now for the screen share the sent strem will get replaced by the screen share stream
-                            
-    export const switchForScreenSharingStream = async () => {
-    if (!store.getState().call.screenSharingActive) {
-        try {
-        screenSharingStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
-        store.dispatch(setScreenSharingActive(true));
-        const senders = peerConnection.getSenders();
-        const sender = senders.find(sender => sender.track.kind === screenSharingStream.getVideoTracks()[0].kind);
-        sender.replaceTrack(screenSharingStream.getVideoTracks()[0]);
-        } catch (err) {
-        console.error('error occured when trying to get screen sharing stream', err);
-        }
-    } else {
-        const localStream = store.getState().call.localStream;
-        const senders = peerConnection.getSenders();
-        const sender = senders.find(sender => sender.track.kind === localStream.getVideoTracks()[0].kind);
-        sender.replaceTrack(localStream.getVideoTracks()[0]);
-        store.dispatch(setScreenSharingActive(false));
-        screenSharingStream.getTracks().forEach(track => track.stop());
-    }
-    }
-    ;
+
+
+#Some additional features
+    Screen share
+    Record the stream
+    Chat feature
+    Tracks hand touch on face and throw the alert
+    
