@@ -72,7 +72,7 @@ When you run this project and enter you name on login page and press submit butt
 After pressing submit button ,dashboard will open and the user details stored in an array in the backend sever will get rendered in the left side of dashboard and you can call these active users by clicking on dial button corresponding to their names.
 When dial button nis clicked startCalling() function is called call state and calle username are dispatched to store and 'pre-offer' message is sent by socket.io to the callee via the signalling server
 
-
+![alt text](https://github.com/VichitraCode/lets-meet-frontend/blob/master/src/resources/Screenshot%20(160).png)
     // preofffer is sent and call states ar chnaged
     export const startCalling = (calleeDetails) => {
     connectedUserSocketId = calleeDetails.socketId;
@@ -87,6 +87,7 @@ When dial button nis clicked startCalling() function is called call state and ca
     });
     };
  if callees socket server listen 'pre-offer' then handlePreOffer()  function is invoked on the callee side and the caller's details are dispatched to store and call state is set to CALL_REQUESTED then the dialog box appears with option of accepting and rejecting the call
+ ![alt text](https://github.com/VichitraCode/lets-meet-frontend/blob/master/src/resources/Screenshot%20(162).png)
  
         export const handlePreOffer = (data) => {
         if (checkIfCallIsPossible()) {
@@ -160,7 +161,7 @@ If the call is accepted  then the 'pre-offer-answer' message with the call accep
 
 
 Now caller side will recive answer from the calle side and the remote decription for the caller side will get setted
-
+![alt text](https://github.com/VichitraCode/lets-meet-frontend/blob/master/src/resources/Screenshot%20(163).png)
 
     export const handleAnswer = async (data) => {
     await peerConnection.setRemoteDescription(data.answer);
