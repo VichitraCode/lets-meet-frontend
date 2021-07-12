@@ -85,7 +85,8 @@ When dial button nis clicked startCalling() function is called call state and ca
         }
     });
     };
-   if callees socket server listen 'pre-offer' then handlePreOffer()  function is invoked on the callee side and the caller's details are dispatched to store and call state is set to CALL_REQUESTED then the dialog box appears with option of accepting and rejecting the call
+ if callees socket server listen 'pre-offer' then handlePreOffer()  function is invoked on the callee side and the caller's details are dispatched to store and call state is set to CALL_REQUESTED then the dialog box appears with option of accepting and rejecting the call
+ 
         export const handlePreOffer = (data) => {
         if (checkIfCallIsPossible()) {
             connectedUserSocketId = data.callerSocketId;
@@ -146,8 +147,6 @@ If the call is accepted  then the 'pre-offer-answer' message with the call accep
 
  Now handleOffer() function will get invoked on the calle side to handle the webrtc offer sent by caller and the local description and remotedescription will get setted for the calle and answer will be sent to the caller.
 
-
-        // remote and local description is setted for the callee and answer is sent to caller
         export const handleOffer = async (data) => {
         await peerConnection.setRemoteDescription(data.offer);
         const answer = await peerConnection.createAnswer();
@@ -162,7 +161,6 @@ If the call is accepted  then the 'pre-offer-answer' message with the call accep
 Now caller side will recive answer from the calle side and the remote decription for the caller side will get setted
 
 
-    // remotedescription isi setted for caller
     export const handleAnswer = async (data) => {
     await peerConnection.setRemoteDescription(data.answer);
     };
