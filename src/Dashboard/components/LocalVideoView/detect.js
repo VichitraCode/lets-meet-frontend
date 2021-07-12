@@ -146,7 +146,7 @@ export const check = (sourceVideo) => {
                     // alert('Do not touch your face to prevent the spread of covid 19!');
                     store.addNotification({
                         title: "Warning!",
-                        message: "Don't touch you face to reduce the spread of covid 19",
+                        message: "Don't touch your face to prevent the spread of covid 19",
                         type: "success",
                         insert: "top",
                         container: "top-left",
