@@ -167,8 +167,7 @@ Now caller side will recive answer from the calle side and the remote decription
                             await peerConnection.setRemoteDescription(data.answer);
                             };
 Now for the screen share the sent strem will get replaced by the screen share stream
-                            let screenSharingStream;
-                            // replace the stream with the screenshare stream
+                            
                             export const switchForScreenSharingStream = async () => {
                             if (!store.getState().call.screenSharingActive) {
                                 try {
