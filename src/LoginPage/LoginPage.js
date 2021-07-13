@@ -21,10 +21,14 @@ const LoginPage = ({ saveUsername }) => {
  //this control the submit button pressed and redirect us to the dashboard
  //with linking out entered name to the generated socked id
   const handleletsgoButtonPressed = () => {
-    registerNewUser(username);
-    saveUsername(username);
-    // redirect to dashboard
-    history.push('/dashboard');
+    if(username!=='')
+    {
+      registerNewUser(username);
+      saveUsername(username);
+      // redirect to dashboard
+      history.push('/dashboard');
+    }
+   
   };
 
   return (
