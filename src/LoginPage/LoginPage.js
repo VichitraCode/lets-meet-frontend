@@ -12,23 +12,38 @@ import SubmitButton from './components/SubmitButton';
 import { useHistory } from 'react-router-dom';
 import { setUsername } from '../store/actions/dashboardActions';
 import { registerNewUser } from '../utils/wssConnection/wssConnection';
+import { store } from 'react-notifications-component';
 import './LoginPage.css';
 
 const LoginPage = ({ saveUsername }) => {
   const [username, setUsername] = useState('');
 
   const history = useHistory();
- //this control the submit button pressed and redirect us to the dashboard
- //with linking out entered name to the generated socked id
+  //this control the submit button pressed and redirect us to the dashboard
+  //with linking out entered name to the generated socked id
   const handleletsgoButtonPressed = () => {
-    if(username!=='')
-    {
+    if (username !== '') {
       registerNewUser(username);
       saveUsername(username);
       // redirect to dashboard
       history.push('/dashboard');
     }
-   
+    else {
+      store.addNotification({
+        title: "Warning!",
+        message: "First enter your name",
+        type: "success",
+        insert: "top",
+        container: "top-right",
+        animationIn: ["animate__animated", "animate__fadeIn"],
+        animationOut: ["animate__animated", "animate__fadeOut"],
+        dismiss: {
+          duration: 2000,
+          onScreen: true
+        }
+      });
+    }
+
   };
 
   return (
